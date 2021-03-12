@@ -1,0 +1,25 @@
+{
+    "name": "server",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "nodemon index.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@types/cors": "^2.8.10",
+        "bcrypt-nodejs": "*",
+        "body-parser": "*",
+        "cors": "^2.8.5",
+        "express": "*",
+        "jwt-simple": "*",
+        "mongoose": "*",
+        "morgan": "*",
+        "nodemon": "*",
+        "passport": "*",
+        "passport-jwt": "*",
+        "passport-local": "*"
+    }
+}
