@@ -3,7 +3,11 @@ const passport = require("passport");
 const ObjectId = require("mongodb").ObjectID;
 
 exports.all = function (req, res, next) {
-  Submission.find()
+  let filter = null;
+  if (typeof req.params.userId !== "undefined")
+    filter = { creator: req.params.userId };
+
+  Submission.find(filter)
     .lean()
     .then((submissions) => {
       res.json(submissions);
@@ -18,7 +22,7 @@ exports.createFake = function (req, res, next) {
     authorPlace: "Враца",
     image: "praseta.jpg",
     description: "Ужасна рисунка",
-    creator: ObjectId("605b2e2c1b159b41b41e333e"),
+    creator: ObjectId("605e07749f62e02008d58866"),
   };
   Submission.create(submissionData).then((createdSubmission) => {
     res.json(createdSubmission);
@@ -29,7 +33,7 @@ exports.create = function (req, res, next) {
   const submissionData = req.body;
   Submission.create({
     ...submissionData,
-    creator: ObjectId("605b2e2c1b159b41b41e333e"),
+    creator: ObjectId("605e07749f62e02008d58866"),
   }).then((createdSubmission) => {
     res.json(createdSubmission);
   });

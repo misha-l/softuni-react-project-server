@@ -7,9 +7,6 @@ const requireAuth = passport.authenticate("jwt", { session: false });
 const requireSignin = passport.authenticate("local", { session: false });
 
 module.exports = function (app) {
-  app.get("/rado", function (req, res) {
-    res.send({ rado: "e prase" });
-  });
   app.get("/", requireAuth, function (req, res) {
     res.send({ hi: "there" });
   });
@@ -19,9 +16,12 @@ module.exports = function (app) {
 
   /* submissions */
   app.get("/submissions/", SubmissionController.all);
+  app.get("/submissions/user/:userId", SubmissionController.all);
   app.get("/submissions/create-fake/", SubmissionController.createFake);
   app.post("/submissions/", SubmissionController.create);
   app.get("/submissions/:submissionId", SubmissionController.details);
   app.delete("/submissions/:submissionId", SubmissionController.delete);
   app.patch("/submissions/:submissionId", SubmissionController.update);
+
+  /* app.get("/submissions/user/:userId", SubmissionController.allByUser); */
 };
