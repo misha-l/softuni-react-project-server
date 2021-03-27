@@ -11,7 +11,7 @@ const cors = require("cors");
 const fs = require("fs");
 
 // DB Setup
-mongoose.connect("mongodb://127.0.0.1:27017/competition");
+mongoose.connect("mongodb://127.0.0.1:27017/competition2");
 
 // App Setup
 app.use(morgan("combined"));

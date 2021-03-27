@@ -30,8 +30,8 @@ const submissionSchema = new Schema({
   },
   likes: [
     {
-      type: Number,
-      required: false,
+      type: ObjectId,
+      ref: "user",
     },
   ],
 });

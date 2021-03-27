@@ -17,11 +17,14 @@ module.exports = function (app) {
   /* submissions */
   app.get("/submissions/", SubmissionController.all);
   app.get("/submissions/user/:userId", SubmissionController.all);
+  app.post("/submissions/likes/:submissionId", SubmissionController.like);
+  app.delete("/submissions/likes/:submissionId", SubmissionController.dislike);
+
   app.get("/submissions/create-fake/", SubmissionController.createFake);
   app.post("/submissions/", SubmissionController.create);
   app.get("/submissions/:submissionId", SubmissionController.details);
   app.delete("/submissions/:submissionId", SubmissionController.delete);
   app.patch("/submissions/:submissionId", SubmissionController.update);
-
-  /* app.get("/submissions/user/:userId", SubmissionController.allByUser); */
+  /*
+  app.get("/submissions/user/:userId", SubmissionController.allByUser); */
 };

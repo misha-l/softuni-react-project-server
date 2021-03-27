@@ -22,7 +22,7 @@ exports.createFake = function (req, res, next) {
     authorPlace: "Враца",
     image: "praseta.jpg",
     description: "Ужасна рисунка",
-    creator: ObjectId("605e07749f62e02008d58866"),
+    creator: ObjectId("605f262bcca6bb3598ddb6de"),
   };
   Submission.create(submissionData).then((createdSubmission) => {
     res.json(createdSubmission);
@@ -33,7 +33,7 @@ exports.create = function (req, res, next) {
   const submissionData = req.body;
   Submission.create({
     ...submissionData,
-    creator: ObjectId("605e07749f62e02008d58866"),
+    creator: ObjectId("605f262bcca6bb3598ddb6de"),
   }).then((createdSubmission) => {
     res.json(createdSubmission);
   });
@@ -66,4 +66,34 @@ exports.update = function (req, res, next) {
   ).then((updatedSubmission) => {
     res.json(updatedSubmission);
   });
+};
+
+exports.like = function (req, res, next) {
+  Submission.findOneAndUpdate(
+    { _id: req.params.submissionId },
+    {
+      $addToSet: {
+        likes: ObjectId("605f262bcca6bb3598ddb6de"),
+      },
+    }
+  )
+    .then((updatedSubmission) => {
+      res.json(updatedSubmission);
+    })
+    .catch((err) => res.json({ error: err.message }));
+};
+
+exports.dislike = function (req, res, next) {
+  Submission.findOneAndUpdate(
+    { _id: req.params.submissionId },
+    {
+      $pull: {
+        likes: ObjectId("605f262bcca6bb3598ddb6de"),
+      },
+    }
+  )
+    .then((updatedSubmission) => {
+      res.json(updatedSubmission);
+    })
+    .catch((err) => res.json({ error: err.message }));
 };
