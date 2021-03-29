@@ -3,28 +3,43 @@ const SubmissionController = require("./controllers/submission");
 const passportService = require("./services/passport");
 const passport = require("passport");
 
-const requireAuth = passport.authenticate("jwt", { session: false });
+const userData = passport.authenticate("visitor", { session: false });
+const requireAuth = passport.authenticate("authed-user", { session: false });
 const requireSignin = passport.authenticate("local", { session: false });
 
 module.exports = function (app) {
-  app.get("/", requireAuth, function (req, res) {
-    res.send({ hi: "there" });
-  });
   /* user */
   app.post("/signin", requireSignin, Authentication.signin);
   app.post("/signup", Authentication.signup);
 
   /* submissions */
-  app.get("/submissions/", SubmissionController.all);
-  app.get("/submissions/user/:userId", SubmissionController.all);
-  app.post("/submissions/likes/:submissionId", SubmissionController.like);
-  app.delete("/submissions/likes/:submissionId", SubmissionController.dislike);
-
-  app.get("/submissions/create-fake/", SubmissionController.createFake);
-  app.post("/submissions/", SubmissionController.create);
-  app.get("/submissions/:submissionId", SubmissionController.details);
-  app.delete("/submissions/:submissionId", SubmissionController.delete);
-  app.patch("/submissions/:submissionId", SubmissionController.update);
-  /*
-  app.get("/submissions/user/:userId", SubmissionController.allByUser); */
+  app.get("/submissions/", userData, SubmissionController.all);
+  app.get(
+    "/submissions/create-fake/",
+    requireAuth,
+    SubmissionController.createFake
+  );
+  // app.get("/submissions/user/", requireAuth, SubmissionController.all);
+  app.post(
+    "/submissions/likes/:submissionId",
+    requireAuth,
+    SubmissionController.like
+  );
+  app.delete(
+    "/submissions/likes/:submissionId",
+    requireAuth,
+    SubmissionController.dislike
+  );
+  app.post("/submissions/", requireAuth, SubmissionController.create);
+  app.get("/submissions/:submissionId", userData, SubmissionController.details);
+  app.delete(
+    "/submissions/:submissionId",
+    requireAuth,
+    SubmissionController.delete
+  );
+  app.patch(
+    "/submissions/:submissionId",
+    requireAuth,
+    SubmissionController.update
+  );
 };
