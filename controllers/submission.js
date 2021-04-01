@@ -121,7 +121,7 @@ exports.dislike = function (req, res, next) {
     { new: true }
   )
     .then((updatedSubmission) => {
-      res.json({ likes: updatedSubmission.likes, likedByUser: true });
+      res.json({ likes: updatedSubmission.likes, likedByUser: false });
     })
     .catch((err) => res.json({ error: err.message }));
 };

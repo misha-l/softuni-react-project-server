@@ -31,6 +31,7 @@ module.exports = function (app) {
     SubmissionController.dislike
   );
   app.post("/submissions/", requireAuth, SubmissionController.create);
+
   app.get("/submissions/:submissionId", userData, SubmissionController.details);
   app.delete(
     "/submissions/:submissionId",
