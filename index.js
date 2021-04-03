@@ -15,12 +15,25 @@ const fs = require("fs");
 
 // mongoose.connect("mongodb://127.0.0.1:27017/competition2");
 
+const Test = require("./models/test");
+
+const mongoUri = process.env.MONGODB_URI
+  ? process.env.MONGODB_URI
+  : "mongodb://127.0.0.1:27017/competition2";
+
 try {
   // Connect to the MongoDB cluster
   mongoose.connect(
-    process.env.MONGODB_URI,
+    mongoUri,
     { useNewUrlParser: true, useUnifiedTopology: true },
-    () => console.log(" Mongoose is connected")
+    () => {
+      console.log(" Mongoose is connected");
+      Test.find()
+        .lean()
+        .then((test) => {
+          console.log(test);
+        });
+    }
   );
 } catch (e) {
   console.log("could not connect");
@@ -30,9 +43,7 @@ try {
 // "mongodb://MKrusharska:RdpSVcbmLFs57Rpi@mishacluster-shard-00-00.2635z.mongodb.net/competition?retryWrites=true&w=majority"
 
 /*
-let mongoUri = process.env.MONGODB_URI
-  ? process.env.MONGODB_URI
-  : "mongodb://127.0.0.1:27017/competition2";
+
 
 mongoose.connect(mongoUri);
 */
