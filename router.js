@@ -7,7 +7,7 @@ const requireAuth = passport.authenticate("authed-user", { session: false });
 const requireSignin = passport.authenticate("local", { session: false });
 
 const optionalJwt = function (req, res, next) {
-  if (req.headers["authorization"]) {
+  if (req.headers.authorization) {
     return passport.authenticate("authed-user", { session: false })(
       req,
       res,
