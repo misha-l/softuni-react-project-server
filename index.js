@@ -15,14 +15,11 @@ mongoose.connect("mongodb://127.0.0.1:27017/competition2");
 
 // App Setup
 app.use(morgan("combined"));
-/*
-const accessLogStream = fs.createWriteStream(__dirname + "access.log", {
-  flags: "a",
-});
-app.use(morgan("combined", { stream: accessLogStream }));
-*/
 app.use(cors());
-app.use(bodyParser.json({ type: "*/*" }));
+// app.use(bodyParser.json({ type: "*/*" }));
+app.use(bodyParser.json()).use(bodyParser.urlencoded());
+app.use(express.static("public"));
+app.use(express.static("uploads"));
 router(app);
 
 // Server Setup

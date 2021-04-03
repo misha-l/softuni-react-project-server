@@ -2,6 +2,28 @@ const Submission = require("../models/submission");
 const passport = require("passport");
 const ObjectId = require("mongodb").ObjectID;
 
+const multer = require("multer");
+
+const storage = multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, "uploads/images");
+  },
+  filename: function (req, file, callback) {
+    callback(null, Date.now() + "-" + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage }).single("file");
+
+exports.upload = function (req, res, next) {
+  upload(req, res, (err) => {
+    if (err) {
+      res.sendStatus(500);
+    }
+    res.send(req.file);
+  });
+};
+
 exports.all = function (req, res, next) {
   console.log("All-req-query", req.query);
   /* load all submissions by default */
@@ -10,41 +32,33 @@ exports.all = function (req, res, next) {
   if (req.query && req.query.byUser) {
     filter = { creator: req.user._id };
   }
-  /*
-  if (typeof req.params.userId !== "undefined")
-    filter = { creator: req.params.userId };
-  */
 
   Submission.find(filter)
     .lean()
     .then((submissions) => {
       const processedSubmissions = submissions.map((submission) => {
-        let likedByUser = false;
-        submission.likes.forEach((like) => {
-          if (String(req.user._id) === String(like)) likedByUser = true;
-        });
+        const actionsAllowed = req.user && req.user._id ? true : false;
         /* if submission belongs to user */
         const createdByUser =
-          String(req.user._id) === String(submission.creator) ? true : false;
+          req.user && String(req.user._id) === String(submission.creator)
+            ? true
+            : false;
+        let likedByUser = false;
+        submission.likes.forEach((like) => {
+          if (req.user && String(req.user._id) === String(like))
+            likedByUser = true;
+        });
         return {
           ...submission,
+          actionsAllowed: actionsAllowed,
           createdByUser: createdByUser,
           likedByUser: likedByUser,
         };
       });
-      console.log("processedSubmissions: ", processedSubmissions);
+      // console.log("processedSubmissions: ", processedSubmissions);
       res.json(processedSubmissions);
     })
     .catch((e) => console.log(e));
-};
-
-exports.createFake = function (req, res, next) {
-  console.log("createFake-user", req.user);
-  const response = {
-    _id: req.user._id,
-    email: req.user.email,
-  };
-  res.json(response);
 };
 
 exports.create = function (req, res, next) {
@@ -61,14 +75,18 @@ exports.details = function (req, res, next) {
   Submission.findOne({ _id: req.params.submissionId })
     .lean()
     .then((detail) => {
+      const actionsAllowed = req.user && req.user._id ? true : false;
       let likedByUser = false;
       detail.likes.forEach((like) => {
-        if (String(req.user._id) === String(like)) likedByUser = true;
+        if (req.user && String(req.user._id) === String(like))
+          likedByUser = true;
       });
       const createdByUser =
-        String(req.user._id) === String(detail.creator) ? true : false;
+        req.user && String(req.user._id) === String(detail.creator)
+          ? true
+          : false;
 
-      res.json({ ...detail, createdByUser, likedByUser });
+      res.json({ ...detail, createdByUser, likedByUser, actionsAllowed });
     });
 };
 
@@ -104,7 +122,11 @@ exports.like = function (req, res, next) {
     { new: true }
   )
     .then((updatedSubmission) => {
-      res.json({ likes: updatedSubmission.likes, likedByUser: true });
+      res.json({
+        _id: updatedSubmission._id,
+        likes: updatedSubmission.likes,
+        likedByUser: true,
+      });
       // res.json(updatedSubmission);
     })
     .catch((err) => res.json({ error: err.message }));
@@ -121,7 +143,11 @@ exports.dislike = function (req, res, next) {
     { new: true }
   )
     .then((updatedSubmission) => {
-      res.json({ likes: updatedSubmission.likes, likedByUser: false });
+      res.json({
+        _id: updatedSubmission._id,
+        likes: updatedSubmission.likes,
+        likedByUser: false,
+      });
     })
     .catch((err) => res.json({ error: err.message }));
 };

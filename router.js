@@ -14,12 +14,7 @@ module.exports = function (app) {
 
   /* submissions */
   app.get("/submissions/", userData, SubmissionController.all);
-  app.get(
-    "/submissions/create-fake/",
-    requireAuth,
-    SubmissionController.createFake
-  );
-  // app.get("/submissions/user/", requireAuth, SubmissionController.all);
+  app.get("/submissions/user/", requireAuth, SubmissionController.all);
   app.post(
     "/submissions/likes/:submissionId",
     requireAuth,
@@ -43,4 +38,5 @@ module.exports = function (app) {
     requireAuth,
     SubmissionController.update
   );
+  app.post("/submissions/upload", requireAuth, SubmissionController.upload);
 };
