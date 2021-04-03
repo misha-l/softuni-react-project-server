@@ -28,6 +28,10 @@ try {
     { useNewUrlParser: true, useUnifiedTopology: true },
     () => {
       console.log(" Mongoose is connected");
+
+      Test.create({ polence2: "Bla" }).then((createdTest) => {
+        // console.log(createdTest);
+      });
       Test.find()
         .lean()
         .then((test) => {

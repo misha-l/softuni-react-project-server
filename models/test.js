@@ -4,14 +4,14 @@ const Schema = mongoose.Schema;
 const { String } = Schema.Types;
 
 const testSchema = new Schema({
-  polence: {
+  polence2: {
     type: String,
     required: false,
   },
 });
 
 // Create the model class
-const ModelClass = mongoose.model("test", testSchema);
+const ModelClass = mongoose.model("test2", testSchema);
 
 // Export the model
 module.exports = ModelClass;
