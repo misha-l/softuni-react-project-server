@@ -53,7 +53,10 @@ const jwtLogin = new JwtStrategy(jwtOptions, function (payload, done) {
 
 // user data JWT Strategy
 
+/*
 const visitorDataLogin = new JwtStrategy(jwtOptions, function (payload, done) {
+  // if (!payload.sub) done(null, true);
+  console.log("Payload-sub: ", payload.sub);
   User.findById(payload.sub, function (err, user) {
     if (err) {
       return done(err, true);
@@ -65,6 +68,7 @@ const visitorDataLogin = new JwtStrategy(jwtOptions, function (payload, done) {
     }
   });
 });
+*/
 
 // Tell passport to use this strategy
 /*
@@ -72,5 +76,5 @@ passport.use(jwtLogin);
 passport.use(userLogin);
 */
 passport.use("authed-user", jwtLogin);
-passport.use("visitor", visitorDataLogin);
+// passport.use("visitor", visitorDataLogin);
 passport.use(localLogin);

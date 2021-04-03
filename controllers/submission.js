@@ -25,11 +25,11 @@ exports.upload = function (req, res, next) {
 };
 
 exports.all = function (req, res, next) {
-  console.log("All-req-query", req.query);
+  console.log("Req-headers", req.headers);
   /* load all submissions by default */
   let filter = null;
   /* load only user's submissions if parameter is present */
-  if (req.query && req.query.byUser) {
+  if (req.query && req.query.byUser && req.user) {
     filter = { creator: req.user._id };
   }
 
