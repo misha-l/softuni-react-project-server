@@ -19,7 +19,7 @@ const optionalJwt = function (req, res, next) {
 
 module.exports = function (app) {
   app.get("/", function (req, res) {
-    res.json("Hi there!");
+    res.json(process.env.MONGODB_URI);
   });
 
   /* user */
