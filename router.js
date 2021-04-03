@@ -18,6 +18,10 @@ const optionalJwt = function (req, res, next) {
 };
 
 module.exports = function (app) {
+  app.get("/", function (req, res) {
+    res.json("Hi there!");
+  });
+
   /* user */
   app.post("/signin", requireSignin, Authentication.signin);
   app.post("/signup", Authentication.signup);
@@ -28,7 +32,7 @@ module.exports = function (app) {
   });
 
   /* submissions */
-  app.get("/submissions/", optionalJwt, SubmissionController.all);
+  app.get("/submissions/", SubmissionController.all);
   app.get("/submissions/user/", requireAuth, SubmissionController.all);
   app.post(
     "/submissions/likes/:submissionId",
