@@ -11,7 +11,15 @@ const cors = require("cors");
 const fs = require("fs");
 
 // DB Setup
-mongoose.connect("mongodb://127.0.0.1:27017/competition2");
+// mongoose.connect("mongodb://127.0.0.1:27017/competition2");
+
+// "mongodb+srv://MKrusharska:RdpSVcbmLFs57Rpi@mishacluster.2635z.mongodb.net/competition?retryWrites=true&w=majority"
+
+mongoose.connect(
+  "mongodb://MKrusharska:RdpSVcbmLFs57Rpi@mishacluster-shard-00-00.2635z.mongodb.net/competition?retryWrites=true&w=majority"
+);
+
+// const uri = process.env.MONGODB_URI;
 
 // App Setup
 app.use(morgan("combined"));
