@@ -25,7 +25,7 @@ exports.upload = function (req, res, next) {
 };
 
 exports.all = function (req, res, next) {
-  console.log("Req-headers-authorization", req.headers.authorization);
+  // console.log("Req-headers-authorization", req.headers.authorization);
   /* load all submissions by default */
   let filter = null;
   /* load only user's submissions if parameter is present */
@@ -55,7 +55,6 @@ exports.all = function (req, res, next) {
           likedByUser: likedByUser,
         };
       });
-      // console.log("processedSubmissions: ", processedSubmissions);
       res.json(processedSubmissions);
     })
     .catch((e) => console.log(e));

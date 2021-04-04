@@ -11,15 +11,10 @@ const cors = require("cors");
 const fs = require("fs");
 
 // DB Setup
-// mongoose.connect("mongodb://127.0.0.1:27017/competition2");
-
-// mongoose.connect("mongodb://127.0.0.1:27017/competition2");
-
-const Test = require("./models/test");
 
 const mongoUri = process.env.MONGODB_URI
   ? process.env.MONGODB_URI
-  : "mongodb://127.0.0.1:27017/competition2";
+  : "mongodb://127.0.0.1:27017/competition_app";
 
 try {
   // Connect to the MongoDB cluster
@@ -27,38 +22,23 @@ try {
     mongoUri,
     { useNewUrlParser: true, useUnifiedTopology: true },
     () => {
-      console.log(" Mongoose is connected");
-
-      Test.create({ polence2: "Bla" }).then((createdTest) => {
-        // console.log(createdTest);
-      });
-      Test.find()
-        .lean()
-        .then((test) => {
-          console.log(test);
-        });
+      // console.log(" Mongoose is connected");
     }
   );
 } catch (e) {
-  console.log("could not connect");
+  // console.log("Mongoose could not connect");
 }
 
-// "mongodb+srv://MKrusharska:RdpSVcbmLFs57Rpi@mishacluster.2635z.mongodb.net/competition?retryWrites=true&w=majority"
-// "mongodb://MKrusharska:RdpSVcbmLFs57Rpi@mishacluster-shard-00-00.2635z.mongodb.net/competition?retryWrites=true&w=majority"
-
-/*
-
-
-mongoose.connect(mongoUri);
-*/
-
-// const uri = process.env.MONGODB_URI;
+/* possible formats to try with Atlas */
+// "mongodb+srv://MKrusharska:___@mishacluster.2635z.mongodb.net/competition?retryWrites=true&w=majority"
+// "mongodb://MKrusharska:___@mishacluster-shard-00-00.2635z.mongodb.net/competition?retryWrites=true&w=majority"
 
 // App Setup
 app.use(morgan("combined"));
 app.use(cors());
 // app.use(bodyParser.json({ type: "*/*" }));
 app.use(bodyParser.json()).use(bodyParser.urlencoded());
+/* register static files directories */
 app.use(express.static("public"));
 app.use(express.static("uploads"));
 router(app);

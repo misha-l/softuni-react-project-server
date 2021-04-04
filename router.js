@@ -32,7 +32,7 @@ module.exports = function (app) {
   });
 
   /* submissions */
-  app.get("/submissions/", SubmissionController.all);
+  app.get("/submissions/", optionalJwt, SubmissionController.all);
   app.get("/submissions/user/", requireAuth, SubmissionController.all);
   app.post(
     "/submissions/likes/:submissionId",

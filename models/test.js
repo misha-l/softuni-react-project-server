@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const { String } = Schema.Types;
 
 const testSchema = new Schema({
-  polence2: {
+  polence: {
     type: String,
     required: false,
   },
